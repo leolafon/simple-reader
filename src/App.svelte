@@ -1,4 +1,6 @@
 <script>
+  import './lib/jszip.min.js';
+  import './lib/epub.min.js';
   import Router from 'svelte-spa-router';
 
   import Home from './home/Home.svelte';
