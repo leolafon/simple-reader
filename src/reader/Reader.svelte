@@ -40,8 +40,9 @@
   }
 
   function handleOnClick(e, iframe) {
-    console.log(e.screenX - iframe.document.body.clientWidth);
-    console.log(e.pageX, e.offsetX, e.clientX, e.screenX);
+    const selection = iframe.window.getSelection();
+    if (selection?.toString()) { return; }
+
     if (e.screenX > (document.body.clientWidth / 2)) {
       goNext(rendition);
     } else {
@@ -59,7 +60,7 @@
         height: '90vh',
         spread: 'none',
       });
-      rendition.on('rendered', (rd, iframe) => {
+      rendition.on('rendered', (_, iframe) => {
         iframe.document.addEventListener('click', (e) => {
           handleOnClick(e, iframe);
         });
