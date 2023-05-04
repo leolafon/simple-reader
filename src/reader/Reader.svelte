@@ -1,4 +1,5 @@
 <script>
+  import ePub from 'epubjs';
   import { getBook } from '../lib/books';
   import Header from './Header.svelte';
 
