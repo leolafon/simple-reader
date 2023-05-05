@@ -1,30 +1,41 @@
 <script>
   import ePub from 'epubjs';
+
   import { getBook } from '../lib/books';
   import Header from './Header.svelte';
 
   export let params = {};
+
+  let currentLocation = null;
+
+  function setLocation(location) {
+    currentLocation = location;
+  }
 
   function getSavedCfi(bookName) {
     return localStorage.getItem(bookName);
   }
 
   const savedCfi = getSavedCfi(params.bookName);
-  console.log(savedCfi);
   const book = ePub();
   let rendition = null;
 
   function goNext(rendition) {
-    rendition.next().then(() => saveCurrentLocation(rendition));
+    rendition.next()
+      .then(() => saveCurrentLocation(rendition))
+      .then(setLocation);
   }
 
   function goPrev(rendition) {
-    rendition.prev().then(() => saveCurrentLocation(rendition));
+    rendition.prev()
+      .then(() => saveCurrentLocation(rendition))
+      .then(setLocation);
   }
 
   async function saveCurrentLocation(rendition) {
     const location = await rendition.currentLocation();
     localStorage.setItem(params.bookName, location.start.cfi);
+    return location;
   }
 
   function handleOnKeyup(e) {
@@ -41,9 +52,12 @@
 
   function handleOnClick(e, iframe) {
     const selection = iframe.window.getSelection();
-    if (selection?.toString()) { return; }
+    if (
+      !selection?.isCollapsed
+      && selection?.focusNode?.nodeType === Node.TEXT_NODE
+    ) { return; }
 
-    if (e.screenX > (document.body.clientWidth / 2)) {
+    if (e.screenX > (iframe.document.body.clientWidth / 2)) {
       goNext(rendition);
     } else {
       goPrev(rendition);
@@ -60,12 +74,17 @@
         height: '90vh',
         spread: 'none',
       });
+      rendition.themes.register('dark', 'theme.css');
+      rendition.themes.register('light', 'theme.css');
+      rendition.themes.select('light');
       rendition.on('rendered', (_, iframe) => {
         iframe.document.addEventListener('click', (e) => {
           handleOnClick(e, iframe);
         });
       })
-      rendition.display(savedCfi ?? undefined);
+      rendition.display(savedCfi ?? undefined)
+        .then(() => rendition.currentLocation())
+        .then(setLocation);
     }
 
     getBook(params.bookName).then((book) => {
@@ -79,7 +98,7 @@
 {#await book.loaded.metadata}
   <p>loading</p>
 {:then metadata}
-  <Header title={metadata.title} author={metadata.creator} />
+  <Header title={metadata.title} author={metadata.creator} location={currentLocation} />
 {/await}
 <div id="viewer"></div>
 
