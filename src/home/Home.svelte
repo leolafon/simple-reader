@@ -1,5 +1,6 @@
 <script>
   import { addBook, getBooks } from '../lib/books';
+  import ButtonImportBooks from './ButtonImportBooks.svelte';
 
   function getRemainingSpace() {
     navigator.storage.estimate().then(({ quota, usage }) => {
@@ -9,10 +10,9 @@
 
   let booksPromise = getBooks();
 
-  async function handleOnImportBook(event) {
-    await addBook(event.target.files[0]);
+  async function handleOnImportBooks(event) {
+    await addBook(event.detail.files[0]);
     booksPromise = getBooks();
-    event.target.value = '';
   }
 
   getRemainingSpace();
@@ -32,10 +32,7 @@
       <p>lol</p>
     {/await}
   </ul>
-  <label>
-    Add a book
-    <input id="book-input" type="file" on:change={handleOnImportBook} />
-  </label>
+  <ButtonImportBooks on:import-books={handleOnImportBooks} />
 </div>
 
 <style>
