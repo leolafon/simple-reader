@@ -13,7 +13,11 @@
 
 <label>
   <BookPlus width="2rem" height="2rem" />
-  <input id="book-input" type="file" on:change={handleOnChange} />
+  <input
+    id="book-input"
+    type="file"
+    accept=".epub"
+    on:change={handleOnChange} />
 </label>
 
 <style>
