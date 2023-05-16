@@ -45,7 +45,17 @@ export function addBook(file) {
 }
 
 export function getBook(bookName) {
+  if (!navigator.storage) { return; }
+
   return navigator.storage.getDirectory()
     .then((root) => root.getFileHandle(bookName))
     .then((fileHandle) => fileHandle.getFile())
 }
+
+export function deleteBook(book) {
+  if (!navigator.storage) { return; }
+
+  return navigator.storage.getDirectory()
+    .then((root) => root.removeEntry(book.key));
+}
+
