@@ -71,7 +71,7 @@
       book.open(bookData, 'binary');
       rendition = book.renderTo('viewer', {
         width: '100%',
-        height: '90vh',
+        height: '95svh',
         spread: 'none',
       });
       rendition.themes.register('dark', 'theme.css');

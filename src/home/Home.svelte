@@ -1,9 +1,9 @@
 <script>
   import { addBook, deleteBook, getBooks } from '../lib/books';
   import { humanFileSize } from '../utils';
-    import BookItem from './BookItem.svelte';
+  import BookItem from './BookItem.svelte';
   import ButtonImportBooks from './ButtonImportBooks.svelte';
-    import DialogConfirmDelete from './DialogConfirmDelete.svelte';
+  import DialogConfirmDelete from './DialogConfirmDelete.svelte';
   import DialogConfirmImport from './DialogConfirmImport.svelte';
 
   function getRemainingSpace() {
@@ -83,7 +83,7 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    height: 90vh;
+    height: 100dvh;
   }
 
   .book-list {
