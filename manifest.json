@@ -1,0 +1,12 @@
+{
+  "name": "Simple reader",
+  "icons": [
+    {
+      "src": "public/reader.svg",
+      "sizes": "any"
+    }
+  ],
+  "start_url": "https://leolafon.github.io/simple-reader/",
+  "display": "standalone"
+}
+
