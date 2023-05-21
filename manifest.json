@@ -2,7 +2,7 @@
   "name": "Simple reader",
   "icons": [
     {
-      "src": "public/reader.svg",
+      "src": "./public/reader.svg",
       "sizes": "any"
     }
   ],
